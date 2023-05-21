@@ -131,7 +131,7 @@ def insertVariation(originalContent):
             print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
             data = insert_shuffle(sentenceNum)
         elif abs(data[1] - data[2]) < 2:
-            error = error + 1+ "번째 
+            error = error + 1 
             print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
             data = insert_shuffle(sentenceNum)
         elif abs(data[1] - data[3]) < 2:
@@ -174,10 +174,11 @@ def insertVariation(originalContent):
     textedContent = textedContent.replace("●", "③", 1)
     textedContent = textedContent.replace("●", "④", 1)
     textedContent = textedContent.replace("●", "⑤", 1)
+    textedContent = textedContent.replace("★.", "")
     content = textedContent.split(".")
     if "" in content:
         content.remove("")
-    return "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳을 고르시오.\n\n[ " + removedSentence + " ]\n\n" + textedContent.replace("★.", "") + "\n\n\n** 정답: " + content[first][0:3]
+    return "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳을 고르시오.\n\n[ " + removedSentence + " ]\n\n" + textedContent.replace("★", "") + "\n\n\n** 정답: " + content[first][0:3]
     
 if not os.path.exists("본문 파일"):
     os.mkdir("본문 파일")
