@@ -56,7 +56,8 @@ def beVerbVariation(originalContent):
 
 def orderVariation(originalContent):
     content = originalContent.split(".")
-    content.remove("")
+    if "" in content:
+        content.remove("")
     firstMassCut = round(len(content) / 3)
     secondMassCut = firstMassCut * 2
     firstMassContent = ""
@@ -86,11 +87,97 @@ def orderVariation(originalContent):
 
 def blankVariation(originalContent):
     content = originalContent.split(".")
-    content.remove("")
+    if "" in content:
+        content.remove("")
     sentenceNumToRemove = random.randint(0, len(content)-1)
     removedSentence = content[sentenceNumToRemove]
     content[sentenceNumToRemove] = "________________"
     return ". ".join(content) + "\n\n\n** 빈칸에 들어갈 문장: " + removedSentence
+
+def insert_shuffle(num):
+    sentenceNum = num.copy()
+    random.shuffle(sentenceNum)
+    first = sentenceNum.pop()
+    second = sentenceNum.pop()
+    third = sentenceNum.pop()
+    fourth = sentenceNum.pop()
+    fifth = sentenceNum.pop()
+    return [first, second, third, fourth, fifth]
+
+def insertVariation(originalContent):
+    content = originalContent.split(".")
+    if "" in content:
+        content.remove("")
+    if(len(content) < 6):
+        return "7개 이상의 문장으로 구성되어 있는 지문만 삽입 문제를 제작할 수 있습니다"
+    sentenceNum = [*range(0, len(content))]
+    data = insert_shuffle(sentenceNum)
+    error = 0
+    while(True):
+        if abs(data[0] - data[1]) < 2:
+            error = error + 1
+            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
+            data = insert_shuffle(sentenceNum)
+        elif abs(data[0] - data[2]) < 2:
+            error = error + 1
+            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
+            data = insert_shuffle(sentenceNum)     
+        elif abs(data[0] - data[3]) < 2:
+            error = error + 1
+            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
+            data = insert_shuffle(sentenceNum)
+        elif abs(data[0] - data[4]) < 2:
+            error = error + 1
+            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
+            data = insert_shuffle(sentenceNum)
+        elif abs(data[1] - data[2]) < 2:
+            error = error + 1+ "번째 
+            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
+            data = insert_shuffle(sentenceNum)
+        elif abs(data[1] - data[3]) < 2:
+            error = error + 1
+            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
+            data = insert_shuffle(sentenceNum)
+        elif abs(data[1] - data[4]) < 2:
+            error = error + 1
+            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
+            data = insert_shuffle(sentenceNum)  
+        elif abs(data[2] - data[3]) < 2:
+            error = error + 1
+            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
+            data = insert_shuffle(sentenceNum) 
+        elif abs(data[2] - data[4]) < 2:
+            error = error + 1
+            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
+            data = insert_shuffle(sentenceNum) 
+        elif abs(data[3] - data[4]) < 2:
+            error = error + 1
+            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
+            data = insert_shuffle(sentenceNum)  
+        else:
+            print("  [!] 삽입 문제 | 사용할 수 있는 경우의 수를 찾았습니다: [" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]")
+            break
+    first = data[0]
+    second = data[1]
+    third = data[2]
+    fourth = data[3]
+    fifth = data[4]
+    removedSentence = content[first]
+    content[first]  = "● ★"
+    content[second] = "● " + content[second]
+    content[third]  = "● " + content[third]
+    content[fourth] = "● " + content[fourth]
+    content[fifth]  = "● " + content[fifth]
+    textedContent = ". ".join(content)
+    textedContent = textedContent.replace("●", "①", 1)
+    textedContent = textedContent.replace("●", "②", 1)
+    textedContent = textedContent.replace("●", "③", 1)
+    textedContent = textedContent.replace("●", "④", 1)
+    textedContent = textedContent.replace("●", "⑤", 1)
+    content = textedContent.split(".")
+    if "" in content:
+        content.remove("")
+    return "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳을 고르시오.\n\n[ " + removedSentence + " ]\n\n" + textedContent.replace("★.", "") + "\n\n\n** 정답: " + content[first][0:3]
     
 if not os.path.exists("본문 파일"):
     os.mkdir("본문 파일")
@@ -131,6 +218,9 @@ writeTxt("순서 배열 문제", givenName, orderVariation(originalContent))
 
 # 빈칸 문제
 writeTxt("빈칸 문제", givenName, blankVariation(originalContent))
+
+# 삽입 문제
+writeTxt("삽입 문제", givenName, insertVariation(originalContent))
 
 # 동사 변경 문제
 #writeTxt("동사 변형 문제.txt", verbVariation(originalContent))
