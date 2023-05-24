@@ -44,6 +44,8 @@ def verbVariation(cash, originalContent):
 """
 
 def beVerbVariation(originalContent):
+    if(originalContent == ""):
+        return "본문을 입력하지 않았습니다"
     content = originalContent
     #beVerbList_simpleTense = ['is', 'am', 'are'] #am과 is의 구분은 너무 쉬워서 제외 함
     beVerbList_simpleTense = ['is', 'are']
@@ -55,9 +57,13 @@ def beVerbVariation(originalContent):
     return content
 
 def orderVariation(originalContent):
+    if(originalContent == ""):
+        return "본문을 입력하지 않았습니다"
     content = originalContent.split(".")
     if "" in content:
         content.remove("")
+    if(len(content) < 6):
+        return "7개 이상의 문장으로 구성되어 있는 지문만 순서 문제를 제작할 수 있습니다"
     firstMassCut = round(len(content) / 3)
     secondMassCut = firstMassCut * 2
     firstMassContent = ""
@@ -86,13 +92,17 @@ def orderVariation(originalContent):
     return "[A] " + shuffledList[0] + "\n\n[B] " + shuffledList[1] + "\n\n[C] " + shuffledList[2] + "\n\n\n** 정답: " + firstOrder + " --> " + secondOrder + " --> " + thirdOrder
 
 def blankVariation(originalContent):
+    if(originalContent == ""):
+        return "본문을 입력하지 않았습니다"
     content = originalContent.split(".")
     if "" in content:
         content.remove("")
+    if(len(content) < 6):
+        return "7개 이상의 문장으로 구성되어 있는 지문만 빈칸 문제를 제작할 수 있습니다"
     sentenceNumToRemove = random.randint(0, len(content)-1)
     removedSentence = content[sentenceNumToRemove]
     content[sentenceNumToRemove] = "________________"
-    return ". ".join(content) + "\n\n\n** 빈칸에 들어갈 문장: " + removedSentence
+    return "다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.\n\n" + ". ".join(content) + "\n\n\n** 정답: " + removedSentence
 
 def insert_shuffle(num):
     sentenceNum = num.copy()
@@ -105,6 +115,8 @@ def insert_shuffle(num):
     return [first, second, third, fourth, fifth]
 
 def insertVariation(originalContent):
+    if(originalContent == ""):
+        return "본문을 입력하지 않았습니다"
     content = originalContent.split(".")
     if "" in content:
         content.remove("")
@@ -179,7 +191,8 @@ def insertVariation(originalContent):
     if "" in content:
         content.remove("")
     return "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳을 고르시오.\n\n[ " + removedSentence + " ]\n\n" + textedContent.replace("★", "") + "\n\n\n** 정답: " + content[first][0:3]
-    
+
+
 if not os.path.exists("본문 파일"):
     os.mkdir("본문 파일")
 
@@ -198,7 +211,7 @@ print("\n\n  [!] 단어 사전 캐쉬를 불러옵니다...  | " + ", ".join(cas
 """
 
 while(True):
-    givenName = input("\n\n  ■ 영어 변형 문제 제작기 | @SleepySoong ■\n  [!] 문제를 생성할 파일의 이름을 확장자를 제외하고 입력해주세요 (*.txt만 지원합니다) : ")
+    givenName = input("\n\n  ■ 영어 변형 문제 제작기 | @SleepySoong ■\n  [!] 문제를 생성할 파일의 이름을 확장자를 제외하고 입력해주세요 (*.txt만 지원합니다) : \n  - 주의: 변형 문제를 만들기 위해선 7개 이상의 문장으로 구성된 영어 본문이 필요합니다 \n")
     if not os.path.isfile("본문 파일/" + givenName + ".txt"):
         print("  [!] 존재하지 않는 파일 입니다. 확장자가 txt가 맞는지, 본문 파일 폴더에 파일이 있는지 확인해주세요!")
     else:
