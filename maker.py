@@ -4,7 +4,6 @@ import os
 import random
 from datetime import datetime
 
-VERSION = [0, 0, 1]
 NUMBER_SYMBOLS = ["⓪", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮", "⑯", "⑰", "⑱", "⑲", "⑳", "㉑", "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘", "㉙", "㉚", "㉛", "㉜", "㉝", "㉞", "㉟", "㊱", "㊲", "㊳", "㊴", "㊵", "㊶", "㊷", "㊸", "㊹", "㊺", "㊻", "㊼", "㊽", "㊾", "㊿"]
 
 def writeTxt(fileName, givenName, content):
@@ -106,16 +105,6 @@ def blankVariation(originalContent):
     removedSentence = content[sentenceNumToRemove]
     content[sentenceNumToRemove] = "________________"
     return "다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.\n\n" + ". ".join(content) + "\n\n\n** 정답: " + removedSentence
-
-def insert_shuffle(num):
-    sentenceNum = num.copy()
-    random.shuffle(sentenceNum)
-    first = sentenceNum.pop()
-    second = sentenceNum.pop()
-    third = sentenceNum.pop()
-    fourth = sentenceNum.pop()
-    fifth = sentenceNum.pop()
-    return [first, second, third, fourth, fifth]
 
 def insertVariation(text):
     text = text.replace(". ", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
