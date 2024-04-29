@@ -4,6 +4,7 @@ import os
 import random
 from datetime import datetime
 
+VERSION = [0, 0, 2]
 NUMBER_SYMBOLS = ["⓪", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮", "⑯", "⑰", "⑱", "⑲", "⑳", "㉑", "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘", "㉙", "㉚", "㉛", "㉜", "㉝", "㉞", "㉟", "㊱", "㊲", "㊳", "㊴", "㊵", "㊶", "㊷", "㊸", "㊹", "㊺", "㊻", "㊼", "㊽", "㊾", "㊿"]
 
 def writeTxt(fileName, givenName, content):
@@ -107,9 +108,7 @@ def blankVariation(originalContent):
     return "다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.\n\n" + ". ".join(content) + "\n\n\n** 정답: " + removedSentence
 
 def insertVariation(text):
-    text = text.replace(". ", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
-    text = text.replace(".\n", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
-    sentences = text.split(".") # .을 기준으로 문장을 나누어 리스트에 담음
+    sentences = convertText(text)
     count = len(sentences) # 문장의 갯수
     randomIndex = random.randint(0, count-1) # 삽입 문제로 출제할 문장의 인덱스를 정함
     randomSentence = sentences[randomIndex] # 위에서 정한 인덱스에 있는 문장 (문제로 출제될 문장)
@@ -128,6 +127,11 @@ def insertVariation(text):
         if i == randomIndex:
             answer = temp
     return "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳을 고르시오.\n\n[ " + randomSentence + " ]\n\n" + ". ".join(sentences) + "\n\n\n** 정답: " + NUMBER_SYMBOLS[answer]
+
+def convertText(text: str) -> list:
+    text = text.replace(". ", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
+    text = text.replace(".\n", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
+    return text.split(".") # .을 기준으로 문장을 나누어 리스트에 담음
 
 if not os.path.exists("본문 파일"):
     os.mkdir("본문 파일")
