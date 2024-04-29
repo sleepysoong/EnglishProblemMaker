@@ -1,15 +1,13 @@
 import os
-#import requests
-#import json
 import random
 from datetime import datetime
 import itertools
-
 
 VERSION = [0, 0, 3]
 
 NUMBER_SYMBOLS = ["⓪", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮", "⑯", "⑰", "⑱", "⑲", "⑳", "㉑", "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘", "㉙", "㉚", "㉛", "㉜", "㉝", "㉞", "㉟", "㊱", "㊲", "㊳", "㊴", "㊵", "㊶", "㊷", "㊸", "㊹", "㊺", "㊻", "㊼", "㊽", "㊾", "㊿"]
 ORDER_CANDIDATES = ["A", "B", "C"]
+
 
 def writeTxt(fileName, givenName, content):
     name = "생성된 문제 파일/" + givenName + " - " + fileName + " @SleepySoong.txt"
@@ -18,37 +16,6 @@ def writeTxt(fileName, givenName, content):
     file.close()
     print("  [!] 파일 [ " + fileName + ".txt ] 이 저장되었습니다!")
 
-"""
-def verbVariation(cash, originalContent):
-    content = originalContent
-    verbList = []
-    for word in content.split(' '):
-        if word.encode().isalpha():
-            www = word.lower()
-            isVerb = False
-            if www in cash:
-                isVerb = cash[www]
-            else:
-                data = requests.get("https://api.dictionaryapi.dev/api/v2/entries/en/" + www).json()
-                try:
-                    data = data[0]["meanings"]
-                except:
-                    isVerb = False # Error
-                    cash[www] = isVerb
-                    print("{www}를 영어 사전에서 조회하는데 실패했습니다.. 동사가 아닌 단어로 등록합니다")
-                    continue
-                for meaning in data:
-                    if meaning['partOfSpeech'] == "verb":
-                        isVerb = True
-                        print("{www}를 영어 사전에서 조회한 결과 동사입니다.. 캐쉬 데이터에 추가합니다")
-                        continue
-            cash[www] = isVerb
-            if isVerb:
-                verbList.append(www)
-    with open('단어 사전 캐쉬/data.json','w') as f:
-    json.dump(cash, f, ensure_ascii=False, indent=4)
-    return ?
-"""
 
 def beVerbVariation(originalContent):
     if(originalContent == ""):
@@ -62,6 +29,7 @@ def beVerbVariation(originalContent):
     for verb in beVerbList_pastTense:
         content = content.replace(" " + verb + " ", " ***" + beVerbList_pastTense[random.randint(0, len(beVerbList_pastTense) - 1)] + "*** ")
     return content
+
 
 def orderVariation(text):
     def convertNumToStr(option: list) -> list: # 숫자로 구성된 배열 순서 정보가 담긴 리스트를 문자(A, B, C)로 변경해주는 함수
@@ -86,6 +54,7 @@ def orderVariation(text):
     print(options)
     return "주어진 글 다음에 이어질 글의 순서로 가장 적절한 것을 고르시오.\n\n[ " + str(firstSentence) + " ]\n\n\n(A) " + ". ".join(mass[0]) + "\n\n(B) " + ". ".join(mass[1]) + "\n\n(C) " + ". ".join(mass[2]) + "\n\n\n" + NUMBER_SYMBOLS[1] + convertListToStr(options[0]) + "\n" + NUMBER_SYMBOLS[2] + convertListToStr(options[1]) + "\n" + NUMBER_SYMBOLS[3] + convertListToStr(options[2]) + "\n" + NUMBER_SYMBOLS[4] + convertListToStr(options[3]) + "\n" + NUMBER_SYMBOLS[5] + convertListToStr(options[4]) + "\n\n\n** 정답: " + NUMBER_SYMBOLS[options.index(correctOrder) + 1]
 
+
 def blankVariation(originalContent):
     if(originalContent == ""):
         return "본문을 입력하지 않았습니다"
@@ -99,6 +68,7 @@ def blankVariation(originalContent):
     content[sentenceNumToRemove] = "________________"
     return "다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.\n\n" + ". ".join(content) + "\n\n\n** 정답: " + removedSentence
 
+
 def insertVariation(text):
     sentences = convertText(text)
     count = len(sentences) # 문장의 갯수
@@ -110,7 +80,7 @@ def insertVariation(text):
     del tempIndexes[randomIndex]
     random.shuffle(tempIndexes)
     indexesWithOption += tempIndexes[0:4] # 선지를 넣을 4개의 인덱스를 랜덤으로 정하여 추가
-    indexesWithOption.sort() # 정렬을 하지 않으면 randomIndex가 무조건 1번이 됨
+    indexesWithOption.sort() # 정렬을 하지 않으면 randomIndex가 무조건 선지  1번이 됨
     answer = -1
     temp = 0
     for i in indexesWithOption:
@@ -120,27 +90,18 @@ def insertVariation(text):
             answer = temp
     return "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳을 고르시오.\n\n[ " + randomSentence + " ]\n\n" + ". ".join(sentences) + "\n\n\n** 정답: " + NUMBER_SYMBOLS[answer]
 
+
 def convertText(text: str) -> list:
     text = text.replace(". ", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
     text = text.replace(".\n", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
     return text.split(".") # .을 기준으로 문장을 나누어 리스트에 담음
+
 
 if not os.path.exists("본문 파일"):
     os.mkdir("본문 파일")
 
 if not os.path.exists("생성된 문제 파일"):
     os.mkdir("생성된 문제 파일")
-
-"""
-if not os.path.isfile("단어 사전 캐쉬/data.json"):
-    with open('단어 사전 캐쉬/data.json','w') as f:
-        json.dump({}, f, ensure_ascii=False, indent=4)
-
-with open("단어 사전 캐쉬/data.json", "r") as json_file:
-    cash = json.load(json_file)
-
-print("\n\n  [!] 단어 사전 캐쉬를 불러옵니다...  | " + ", ".join(cash) + "\n\n")
-"""
 
 while(True):
     givenName = input("\n\n  ■ 영어 변형 문제 제작기 | @SleepySoong ■\n  [!] 문제를 생성할 파일의 이름을 확장자를 제외하고 입력해주세요 (*.txt만 지원합니다) : \n  - 주의: 변형 문제를 만들기 위해선 7개 이상의 문장으로 구성된 영어 본문이 필요합니다 \n")
