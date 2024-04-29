@@ -4,6 +4,9 @@ import os
 import random
 from datetime import datetime
 
+VERSION = [0, 0, 1]
+NUMBER_SYMBOLS = ["⓪", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮", "⑯", "⑰", "⑱", "⑲", "⑳", "㉑", "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘", "㉙", "㉚", "㉛", "㉜", "㉝", "㉞", "㉟", "㊱", "㊲", "㊳", "㊴", "㊵", "㊶", "㊷", "㊸", "㊹", "㊺", "㊻", "㊼", "㊽", "㊾", "㊿"]
+
 def writeTxt(fileName, givenName, content):
     name = "생성된 문제 파일/" + givenName + " - " + fileName + " @SleepySoong.txt"
     file = open(name, 'w')
@@ -114,84 +117,28 @@ def insert_shuffle(num):
     fifth = sentenceNum.pop()
     return [first, second, third, fourth, fifth]
 
-def insertVariation(originalContent):
-    if(originalContent == ""):
-        return "본문을 입력하지 않았습니다"
-    content = originalContent.split(".")
-    if "" in content:
-        content.remove("")
-    if(len(content) < 6):
-        return "7개 이상의 문장으로 구성되어 있는 지문만 삽입 문제를 제작할 수 있습니다"
-    sentenceNum = [*range(0, len(content))]
-    data = insert_shuffle(sentenceNum)
-    error = 0
-    while(True):
-        if abs(data[0] - data[1]) < 2:
-            error = error + 1
-            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
-            data = insert_shuffle(sentenceNum)
-        elif abs(data[0] - data[2]) < 2:
-            error = error + 1
-            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
-            data = insert_shuffle(sentenceNum)     
-        elif abs(data[0] - data[3]) < 2:
-            error = error + 1
-            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
-            data = insert_shuffle(sentenceNum)
-        elif abs(data[0] - data[4]) < 2:
-            error = error + 1
-            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
-            data = insert_shuffle(sentenceNum)
-        elif abs(data[1] - data[2]) < 2:
-            error = error + 1 
-            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
-            data = insert_shuffle(sentenceNum)
-        elif abs(data[1] - data[3]) < 2:
-            error = error + 1
-            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
-            data = insert_shuffle(sentenceNum)
-        elif abs(data[1] - data[4]) < 2:
-            error = error + 1
-            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
-            data = insert_shuffle(sentenceNum)  
-        elif abs(data[2] - data[3]) < 2:
-            error = error + 1
-            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
-            data = insert_shuffle(sentenceNum) 
-        elif abs(data[2] - data[4]) < 2:
-            error = error + 1
-            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
-            data = insert_shuffle(sentenceNum) 
-        elif abs(data[3] - data[4]) < 2:
-            error = error + 1
-            print("  [!] 삽입 문제 | 사용할 수 없는 경우의 수 ([" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]) 가 발생하여 새로운 경우의 수를 찾고 있습니다.. " + str(error) + "번째 시도중")
-            data = insert_shuffle(sentenceNum)  
-        else:
-            print("  [!] 삽입 문제 | 사용할 수 있는 경우의 수를 찾았습니다: [" + str(data[0]) + ", " + str(data[1]) + ", " + str(data[2]) + ", " + str(data[3]) + ", " + str(data[4]) + "]")
-            break
-    first = data[0]
-    second = data[1]
-    third = data[2]
-    fourth = data[3]
-    fifth = data[4]
-    removedSentence = content[first]
-    content[first]  = "● ★"
-    content[second] = "● " + content[second]
-    content[third]  = "● " + content[third]
-    content[fourth] = "● " + content[fourth]
-    content[fifth]  = "● " + content[fifth]
-    textedContent = ". ".join(content)
-    textedContent = textedContent.replace("●", "①", 1)
-    textedContent = textedContent.replace("●", "②", 1)
-    textedContent = textedContent.replace("●", "③", 1)
-    textedContent = textedContent.replace("●", "④", 1)
-    textedContent = textedContent.replace("●", "⑤", 1)
-    textedContent = textedContent.replace("★.", "")
-    content = textedContent.split(".")
-    if "" in content:
-        content.remove("")
-    return "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳을 고르시오.\n\n[ " + removedSentence + " ]\n\n" + textedContent.replace("★", "") + "\n\n\n** 정답: " + content[first][0:3]
-
+def insertVariation(text):
+    text = text.replace(". ", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
+    text = text.replace(".\n", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
+    sentences = text.split(".") # .을 기준으로 문장을 나누어 리스트에 담음
+    count = len(sentences) # 문장의 갯수
+    randomIndex = random.randint(0, count-1) # 삽입 문제로 출제할 문장의 인덱스를 정함
+    randomSentence = sentences[randomIndex] # 위에서 정한 인덱스에 있는 문장 (문제로 출제될 문장)
+    del sentences[randomIndex]
+    indexesWithOption = [randomIndex] # 앞에 선지가 달릴 문장들의 인덱스를 담아두는 리스트 (해당 문장이 제거되면 뒤에 있는 문장에는 무조건 선지가 붙어야하고 이게 정답임)
+    tempIndexes = list(range(0, count-1)) # 문장 하나를 제거 했으니까 -1을 해줌
+    del tempIndexes[randomIndex]
+    random.shuffle(tempIndexes)
+    indexesWithOption += tempIndexes[0:4] # 선지를 넣을 4개의 인덱스를 랜덤으로 정하여 추가
+    indexesWithOption.sort() # 정렬을 하지 않으면 randomIndex가 무조건 1번이 됨
+    answer = -1
+    temp = 0
+    for i in indexesWithOption:
+        temp += 1
+        sentences[i] = NUMBER_SYMBOLS[temp] + " " + sentences[i]
+        if i == randomIndex:
+            answer = temp
+    return "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳을 고르시오.\n\n[ " + randomSentence + " ]\n\n" + ". ".join(sentences) + "\n\n\n** 정답: " + NUMBER_SYMBOLS[answer]
 
 if not os.path.exists("본문 파일"):
     os.mkdir("본문 파일")
