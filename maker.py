@@ -2,7 +2,7 @@ import os
 import random
 import itertools
 
-VERSION = [0, 0, 4]
+VERSION = [0, 0, 5]
 
 NUMBER_SYMBOLS = ["⓪", "①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧", "⑨", "⑩", "⑪", "⑫", "⑬", "⑭", "⑮", "⑯", "⑰", "⑱", "⑲", "⑳", "㉑", "㉒", "㉓", "㉔", "㉕", "㉖", "㉗", "㉘", "㉙", "㉚", "㉛", "㉜", "㉝", "㉞", "㉟", "㊱", "㊲", "㊳", "㊴", "㊵", "㊶", "㊷", "㊸", "㊹", "㊺", "㊻", "㊼", "㊽", "㊾", "㊿"]
 ORDER_CANDIDATES = ["A", "B", "C"]
@@ -62,7 +62,7 @@ def blank_variation(text):
     stc_num_to_del = random.randint(0, len(text)-1)
     removed_stc = text[stc_num_to_del]
     text[stc_num_to_del] = "________________"
-    return "다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.\n\n" + ". ".join(text) + "\n\n\n** 정답: " + removed_stc
+    return "다음 빈칸에 들어갈 말로 가장 적절한 것을 고르시오.\n\n" + ".".join(text) + "\n\n\n** 정답: " + removed_stc
 
 
 def insert_variation(text):
@@ -70,13 +70,12 @@ def insert_variation(text):
     count = len(stcs) # 문장의 갯수
     rand_idx = random.randint(0, count-1) # 삽입 문제로 출제할 문장의 인덱스를 정함
     rand_stc = stcs[rand_idx] # 위에서 정한 인덱스에 있는 문장 (문제로 출제될 문장)
-    del stcs[rand_idx]
     idxes_with_option = [rand_idx] # 앞에 선지가 달릴 문장들의 인덱스를 담아두는 리스트 (해당 문장이 제거되면 뒤에 있는 문장에는 무조건 선지가 붙어야하고 이게 정답임)
-    temp_idxes = list(range(0, count-1)) # 문장 하나를 제거 했으니까 -1을 해줌
-    del temp_idxes[rand_idx]
+    temp_idxes = list(range(count)) # 문장 하나를 제거 했으니까 -1을 해줌
+    temp_idxes.remove(rand_idx)
     random.shuffle(temp_idxes)
     idxes_with_option += temp_idxes[0:4] # 선지를 넣을 4개의 인덱스를 랜덤으로 정하여 추가
-    idxes_with_option.sort() # 정렬을 하지 않으면 rand_idx가 무조건 선지  1번이 됨
+    idxes_with_option.sort() # 정렬을 하지 않으면 rand_idx가 무조건 선지 1번이 됨
     answer = -1
     temp = 0
     for i in idxes_with_option:
@@ -84,13 +83,18 @@ def insert_variation(text):
         stcs[i] = NUMBER_SYMBOLS[temp] + " " + stcs[i]
         if i == rand_idx:
             answer = temp
+    del stcs[rand_idx] # 인덱스가 꼬일 수 있으므로 문제를 생성하기 직전에 문장을 제거
     return "글의 흐름으로 보아, 주어진 문장이 들어가기에 가장 적절한 곳을 고르시오.\n\n[ " + rand_stc + " ]\n\n" + ". ".join(stcs) + "\n\n\n** 정답: " + NUMBER_SYMBOLS[answer]
 
 
 def convert_txt(text: str) -> list:
-    text = text.replace(". ", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
-    text = text.replace(".\n", ".") # 나중에 .을 기준으로 문장을 나누기 위한 작업
-    return text.split(".") # .을 기준으로 문장을 나누어 리스트에 담음
+    """
+    기존에는 '. ', '.\n' 등을 모두 '.'로 바꾸고 '.'을 기준으로 나눠서 문장을 구분했으나
+    in terms of personal gain (e.g., arranging a particular jail sentence will
+    등의 문장에서는 정확히 문장을 나눌 수 없었음 (e.g., 때문에)
+    그래서 '. ' 기준으로 문장을 구분하는 것으로 로직을 변경함
+    """
+    return text.split(". ")
 
 
 if not os.path.exists("본문 파일"):
@@ -99,7 +103,7 @@ if not os.path.exists("본문 파일"):
 if not os.path.exists("생성된 문제 파일"):
     os.mkdir("생성된 문제 파일")
 
-while(True):
+while True:
     name = input("\n\n  ■ 영어 변형 문제 제작기 | @SleepySoong ■\n  [!] 문제를 생성할 파일의 이름을 확장자를 제외하고 입력해주세요 (*.txt만 지원합니다) : \n  - 주의: 변형 문제를 만들기 위해선 7개 이상의 문장으로 구성된 영어 본문이 필요합니다 \n")
     if not os.path.isfile("본문 파일/" + name + ".txt"):
         print("  [!] 존재하지 않는 파일 입니다. 확장자가 txt가 맞는지, 본문 파일 폴더에 파일이 있는지 확인해주세요!")
@@ -108,7 +112,7 @@ while(True):
         break
 
 file = open("본문 파일/" + name + ".txt", 'rt', encoding='UTF8')
-original_contents = ''.join(file.readlines()).replace("\n", "")
+original_contents = ''.join(file.readlines()).replace("\n", " ")
 file.close()
 
 print("\n\n  [!] 변형 문제 제작을 시작합니다.. 시간이 어느 정도 소요될 수 있습니다..\n\n")
@@ -124,9 +128,6 @@ write_txt("빈칸 문제", name, blank_variation(original_contents))
 
 # 삽입 문제
 write_txt("삽입 문제", name, insert_variation(original_contents))
-
-# 동사 변경 문제
-#write_txt("동사 변형 문제.txt", verbVariation(original_contents))
 
 print("\n\n  [!] 변형 문제 제작이 성공적으로 완료되었습니다. 프로그램을 종료합니다.")
 print("  - 원본 파일: " + name + ".txt")
